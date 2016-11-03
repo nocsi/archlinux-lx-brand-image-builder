@@ -164,14 +164,5 @@ UNTEST=arch-rootfs-untested.tar.xz
 tar --numeric-owner --xattrs --acls -C $ROOTFS -c . | xz -c -z - --threads=0 > $UNTEST
 rm -rf $ROOTFS
 
-echo "Testing filesystem..."
-xzcat $UNTEST | docker import - archtest
-docker run -t --rm archtest echo Success.
-docker rmi archtest
-
-echo "Creating local nocsi/archlinux"
-xzcat $UNTEST | docker import - nocsi/$DOCKER_IMAGE_NAME
-docker run --rm -t nocsi/$DOCKER_IMAGE_NAME echo Success.
-
 echo "Approving filesystem..."
 mv $UNTEST arch-rootfs-${DATE}.tar.xz
